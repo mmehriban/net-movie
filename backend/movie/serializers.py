@@ -31,11 +31,12 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     genre_info = GenreSerializer(many=True, source='genres', read_only =True)
-    section_name = SectionSerializer(many=True, source ='sections', read_only =True)
+    section_name = SectionSerializer(source='section', read_only=True)
+    
     class Meta:
         model = Movie
         fields = '__all__'  
         extra_kwargs = {
             'genres': {'write_only': True},
-            'sections': {'write_only': True},
+            'section': {'write_only': True},
         }         
