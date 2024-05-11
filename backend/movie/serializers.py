@@ -22,12 +22,6 @@ class SectionSerializer(serializers.ModelSerializer):
         model = Section
         fields = ['title']
 
-class PlaylistSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Playlist
-        fields = '__all__'        
-
 
 class MovieSerializer(serializers.ModelSerializer):
     genre_info = GenreSerializer(many=True, source='genres', read_only =True)
@@ -40,3 +34,17 @@ class MovieSerializer(serializers.ModelSerializer):
             'genres': {'write_only': True},
             'section': {'write_only': True},
         }         
+
+# class MoviePlaylistSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Movie
+#         fields = ['title']
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    movie_list = MovieSerializer(many=True, source='movies', read_only=True)
+    class Meta:
+        model = Playlist
+        fields = '__all__'   
+        # extra_kwargs = {
+        #     'movies': {'write_only': True}
+        # }        

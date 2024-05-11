@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from .models import Genre, Section, Movie, Playlist
-from .serializers import GenreSerializer, PlaylistSerializer, MovieSerializer
+from .serializers import GenreSerializer, PlaylistSerializer, MovieSerializer, SectionSerializer
 from rest_framework import status, generics, parsers, permissions, pagination, filters
 import datetime
 from rest_framework.response import Response
@@ -33,3 +33,12 @@ class MovieListAV(generics.ListCreateAPIView):
 class MovieDetailAV(generics.RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()  
     serializer_class = MovieSerializer 
+
+# section 
+class SectionListAV(generics.ListCreateAPIView):
+    queryset = Section.objects.all()  
+    serializer_class = SectionSerializer
+
+class SectionDetailAV(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Section.objects.all()  
+    serializer_class = SectionSerializer     

@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from os import getenv
+from django.conf import settings
+from django.conf.urls.static import static
 
 api_patterns = [
     path('', include('movie.urls')),
@@ -28,6 +30,6 @@ urlpatterns = [
     path('api/', include(api_patterns)),
 
 ]
-
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #1:28-2:05
 

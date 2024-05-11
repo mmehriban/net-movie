@@ -5,29 +5,82 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import MovieList from '../MovieList/MovieList';
+import Backdrop from '../../components/Backdrop/Backdrop';
+import MovieDetail from '../MovieDetail/MovieDetail';
+import MovieItem from '../MovieItem/MovieItem';
+import { useParams } from 'react-router-dom';
+
 
 export interface IHomeProps {
+  // handleQuitMovieDetail: () => void;
+  // setIsOpen: any;
+  // onClick: () => void;
+
 }
 
-export default function Home(props: IHomeProps) {
+export default function Home(props: any) {
+  const [isMovieDetailOpen, setIsMovieDetailOpen] = React.useState(false);
+  const [selectedMovieId, setSelectedMovieId] = React.useState<string | null>(null);
 
+  const openMovieDetailOf = (movieId: string) => {
+    setSelectedMovieId(movieId);
+    // setIsMovieDetailOpen(true);
+    setIsMovieDetailOpen(!isMovieDetailOpen);
+    window.scrollTo(0, 0);
+  };
+
+  const closeMovieDetail = () => {
+    setSelectedMovieId(null);
+    setIsMovieDetailOpen(false);
+  };
+
+  const [openMovieDetail, setOpenMovieDetail] = React.useState(false)
+
+  const handleMovieDetailClick = (movieIds: any) =>{
+    setOpenMovieDetail(!openMovieDetail)
+    console.log('clicked');
+    
+  }
+
+  const handleCloseMovieDetail = () => {
+    setOpenMovieDetail(false);
+  };
+
+
+  const handlePlayClick = () => {
+
+    const video = document.querySelector('video');
+    if (video) {
+      video.currentTime = 0;
+      video.requestFullscreen();
+      video.play();
+    }
+    console.log('Play button clicked');
+  };
 
   return (
     <div>
       <div className=''>
           <div className='relative' style={{ height: '100vh', width: '100vw', overflow: 'hidden' }} >
-            <video style={{ height: '100%', width: '100%', objectFit: 'cover', zIndex: 0 }} src={videoBg} autoPlay loop muted />
+            <video style={{ height: '100%', width: '100%', objectFit: 'cover', zIndex: 0 }} src={videoBg} autoPlay loop muted 
+              onEnded={(e) => {
+                const target = e.target as HTMLVideoElement;
+                if (target) {
+                  target.currentTime = 0;
+                }
+              }}
+            />
             <div className='absolute w-1/3 bottom-80 left-16 z-10 text-white'>
-            <h1 className='text-7xl font-bold pt-5'>Name of the movie</h1>
-            <p className='text-lg pt-5'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio harum maiores architecto, quis suscipit sed.</p>
+            <h1 className='text-7xl font-bold pt-5'>Spirited away</h1>
+            <p className='text-lg pt-5'>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches and spirits, and where humans are changed into beasts.</p>
               <div className='flex text-gray-950 pt-5 text-xl'>
-                <div className='mr-3 flex justify-center items-center w-32 h-12 rounded-md bg-white hover:bg-white/70 cursor-pointer'>
+                <div className='mr-3 flex justify-center items-center w-32 h-12 rounded-md bg-white hover:bg-white/70 cursor-pointer' onClick={handlePlayClick}>
                   <PlayArrowIcon sx={{ fontSize: 45 }}/>
                   <h2 className='font-medium pl-1'>Play</h2>
                 </div>
-                <div className='mr-3 flex justify-center items-center w-44 h-12 rounded-md bg-gray-400/45 hover:bg-gray-400/20 cursor-pointer text-white'>
+                <div onClick={() => openMovieDetailOf("2")} className='mr-3 flex justify-center items-center w-44 h-12 rounded-md bg-gray-400/45 hover:bg-gray-400/20 cursor-pointer text-white'>
                   <InfoOutlinedIcon sx={{ fontSize: 35 }}/>
-                  <h2 className='font-medium pl-1'>More Info</h2>
+                  <h2 className='font-medium pl-1' >More Info</h2>
                 </div>
               </div>
             </div>
@@ -35,11 +88,33 @@ export default function Home(props: IHomeProps) {
               <MovieList />
             </div> */}
           </div>
-          <div className='mb-96'>
-              <MovieList />
-              <MovieList />
+          <div className='mb-40'>
+              <MovieList openMovieDetailOf={openMovieDetailOf}/>
+          </div>
+            {/* {isMovieDetailOpen && selectedMovieId && <Backdrop onClick={closeMovieDetail} closeMovieDetail={closeMovieDetail}/>} */}
+            {isMovieDetailOpen && selectedMovieId &&  <MovieDetail movieId={selectedMovieId} />}
+      </div>
+
+      <div className='p-16 text-gray-400 mb-10 text-sm'>
+        <div className='flex justify-around'>
+          <div>
+            <p className='pb-2'>Audio Description</p>
+            <p className='pb-2'>Privacy</p>
+            <p className='pb-2'>Legal Notices</p>
+          </div>
+          <div>
+            <p className='pb-2'>Help Center</p>
+            <p className='pb-2'>Jobs</p>
+            <p className='pb-2'>Cookie Preferences</p>
+          </div>
+          <div>
+            <p className='pb-2'>Media Center</p>
+            <p className='pb-2'>Privacy</p>
+            <p className='pb-2'>Contact Us</p>
           </div>
 
+        </div>
+            <p className='pt-5 pl-52'>1997-2024 Netflix, Inc.</p>
       </div>
     </div>
   );

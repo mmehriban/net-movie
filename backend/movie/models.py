@@ -4,12 +4,12 @@ from django.db import models
 
 class Movie(models.Model):
     title = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='toupload/images/')
+    image = models.ImageField(upload_to='movies/images/')
     description = models.TextField()
     release_date = models.DateField(blank=True, null=True)
     imdb = models.IntegerField()
     playlists = models.ManyToManyField('movie.Playlist', blank=True, related_name='movies')
-    video = models.FileField(upload_to='toupload/videos/', blank=True, null=True)
+    video = models.FileField(upload_to='movies/videos/', blank=True, null=True)
     section = models.ForeignKey('movie.Section', on_delete=models.CASCADE, null=True)
     genres = models.ManyToManyField('movie.Genre')
 
@@ -33,6 +33,7 @@ class Section(models.Model):
     
 class Playlist(models.Model):
     title = models.TextField()
+    # author = models.ForeignKey('user.Customer', on_delete = models.CASCADE, related_name='playlists')
     featured = models.BooleanField(default=False)
     updated = models.DateField(auto_now = True)
     created = models.DateField(auto_now_add = True)

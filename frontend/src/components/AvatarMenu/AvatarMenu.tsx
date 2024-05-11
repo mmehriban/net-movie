@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import avatarImg from '../../assets/images/avatar.jpg'
 
 
 export default function AvatarMenu() {
@@ -33,7 +34,8 @@ export default function AvatarMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+            {/* <img style={{width: '15px', height: '15px'}} src={avatarImg}> </img> */}
           </IconButton>
         </Tooltip>
       </Box>
@@ -72,19 +74,19 @@ export default function AvatarMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Avatar /> Profile
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleClose}>
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />

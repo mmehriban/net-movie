@@ -12,6 +12,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from movie.models import Movie
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from rest_framework.authtoken.models import Token
+
 # Create your views here.
 
 # liked movies
@@ -37,18 +41,36 @@ def unlike_movie(request, pk):
     request.user.customer.liked_movies.remove(movie)
     return Response(status=status.HTTP_202_ACCEPTED)
 
+# @api_view(['POST'])
+# def register_view(request):
+#     serializer = RegisterSerializer(data=request.data)
+#     if serializer.is_valid():
+#         email = serializer.validated_data.get('email')
+#         try:
+#             validate_email(email)
+#         except ValidationError:
+#             return Response({'error': 'Invalid email format'}, status=status.HTTP_400_BAD_REQUEST)
+        
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     else:
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # register
+
 @api_view(['POST'])
-@throttle_classes([AnonRateThrottle, UserRateThrottle])
+# @throttle_classes([AnonRateThrottle, UserRateThrottle])
 def register_view(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 # login
 @api_view(['POST'])
-@throttle_classes([AnonRateThrottle, UserRateThrottle])
+# @throttle_classes([AnonRateThrottle, UserRateThrottle])
 def login_view(request):
     user_info = request.data.get('user_info')
     password = request.data.get('password')
@@ -61,3 +83,17 @@ def login_view(request):
         serializer = CustomerInfoSerializer(instance=user.customer)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(data={'message':'User info or password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['POST'])
+# @throttle_classes([AnonRateThrottle, UserRateThrottle])
+def logout_view(request):
+    try:
+        # Get the user's token
+        token = request.auth
+        # Delete the token from the database
+        Token.objects.filter(key=token).delete()
+        return Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"message": "An error occurred during logout."}, status=status.HTTP_400_BAD_REQUEST)

@@ -8,6 +8,8 @@ urlpatterns = [
     path('playlist/<int:pk>/', views.PlaylistDetailAV.as_view(), name='playlist-detail'),
     path('movies/', views.MovieListAV.as_view(), name='movie-list'),
     path('movies/<int:pk>/', views.MovieDetailAV.as_view(), name='movie-detail'),
+    path('sections/', views.SectionListAV.as_view(), name='section-list'),
+
     
 
 ]
