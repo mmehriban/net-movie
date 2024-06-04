@@ -9,12 +9,19 @@ import Login from './containers/Login/Login';
 import MovieDetail from './containers/MovieDetail/MovieDetail';
 import './App.css';
 import { useSelector } from 'react-redux';
+import Searching from './containers/Navbar/Searching';
 
 function App() {
 
   const {username, token}: any = useSelector((state: any)=> state.auth)
   console.log(username, token);
-    
+  
+  const handleSearch = (query: string) => {
+    console.log('Searching for:', query);
+    // Add logic to handle search if needed
+  };
+
+
   return (
     <div className="">
         <Layout>
@@ -23,9 +30,9 @@ function App() {
               <Route path='/mylist' element={<MyList />} />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/movies-search/' element={<Searching onSearch={handleSearch}/>} />
 
               {/* <Route path='/playlist/:id/:slug' element={<Playlist />} />
-              <Route path='/search/*' element={<Search />} />
               <Route path='/profile/:id/' element={<Profile />} /> */}
             </Routes>
         </Layout>

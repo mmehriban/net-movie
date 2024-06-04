@@ -9,13 +9,9 @@ import Backdrop from '../../components/Backdrop/Backdrop';
 import MovieDetail from '../MovieDetail/MovieDetail';
 import MovieItem from '../MovieItem/MovieItem';
 import { useParams } from 'react-router-dom';
-
+import Footer from '../Footer/Footer';
 
 export interface IHomeProps {
-  // handleQuitMovieDetail: () => void;
-  // setIsOpen: any;
-  // onClick: () => void;
-
 }
 
 export default function Home(props: any) {
@@ -68,8 +64,7 @@ export default function Home(props: any) {
                 if (target) {
                   target.currentTime = 0;
                 }
-              }}
-            />
+              }}/>
             <div className='absolute w-1/3 bottom-80 left-16 z-10 text-white'>
             <h1 className='text-7xl font-bold pt-5'>Spirited away</h1>
             <p className='text-lg pt-5'>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches and spirits, and where humans are changed into beasts.</p>
@@ -85,37 +80,19 @@ export default function Home(props: any) {
               </div>
             </div>
             {/* <div className='absolute top-3/4 left-0'>
-              <MovieList />
+              <MovieList openMovieDetailOf={openMovieDetailOf}/>
             </div> */}
           </div>
           <div className='mb-40'>
               <MovieList openMovieDetailOf={openMovieDetailOf}/>
           </div>
-            {/* {isMovieDetailOpen && selectedMovieId && <Backdrop onClick={closeMovieDetail} closeMovieDetail={closeMovieDetail}/>} */}
             {isMovieDetailOpen && selectedMovieId &&  <MovieDetail movieId={selectedMovieId} />}
       </div>
-
-      <div className='p-16 text-gray-400 mb-10 text-sm'>
-        <div className='flex justify-around'>
-          <div>
-            <p className='pb-2'>Audio Description</p>
-            <p className='pb-2'>Privacy</p>
-            <p className='pb-2'>Legal Notices</p>
-          </div>
-          <div>
-            <p className='pb-2'>Help Center</p>
-            <p className='pb-2'>Jobs</p>
-            <p className='pb-2'>Cookie Preferences</p>
-          </div>
-          <div>
-            <p className='pb-2'>Media Center</p>
-            <p className='pb-2'>Privacy</p>
-            <p className='pb-2'>Contact Us</p>
-          </div>
-
-        </div>
-            <p className='pt-5 pl-52'>1997-2024 Netflix, Inc.</p>
+      {/* footer start */}
+      <div>
+          <Footer />
       </div>
+      {/* footer end */}
     </div>
   );
 }

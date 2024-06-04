@@ -15,6 +15,9 @@ from movie.models import Movie
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 # Create your views here.
 
@@ -68,7 +71,7 @@ def register_view(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-# login
+# login 1 version 
 @api_view(['POST'])
 # @throttle_classes([AnonRateThrottle, UserRateThrottle])
 def login_view(request):
@@ -84,6 +87,47 @@ def login_view(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(data={'message':'User info or password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
 
+# 2 version
+# @api_view(['POST'])
+# def login_view(request):
+#     username = request.data.get('username')
+#     password = request.data.get('password')
+
+#     user = authenticate(request, username=username, password=password)
+#     if user is not None:
+#         # If authentication is successful, generate token
+#         refresh = RefreshToken.for_user(user)
+#         access_token = str(refresh.access_token)
+#         return Response({'token': access_token}, status=status.HTTP_200_OK)
+#     else:
+#         # If authentication fails, return error response
+#         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# # 3 version
+# @api_view(['POST'])
+# def login_view(request):
+#     user_info = request.data.get('user_info')
+#     password = request.data.get('password')
+
+#     # Try to authenticate user_info as either email or username
+#     user = None
+#     if '@' in user_info:
+#         # If user_info contains '@', treat it as an email
+#         user = User.objects.filter(email=user_info).first()
+#     else:
+#         # Otherwise, treat it as a username
+#         user = User.objects.filter(username=user_info).first()
+
+#     # Authenticate the user with the provided password
+#     if user is not None and user.check_password(password):
+#         # If authentication is successful, generate token
+#         refresh = RefreshToken.for_user(user)
+#         access_token = str(refresh.access_token)
+#         return Response({'token': access_token}, status=status.HTTP_200_OK)
+#     else:
+#         # If authentication fails, return error response
+#         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
     'rest_framework.authtoken',
+    'django_filters',
     #INTERNAL
     'movie',
     'user'
@@ -148,6 +149,11 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10/hour',
         'user': '10/hour'
-    }    
+    },
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
 }
 

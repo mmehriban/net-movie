@@ -27,17 +27,31 @@ export const {setLoginInfo, setRegisterInfo} = authSlice.actions;
 
 export default authSlice.reducer;
 
+// 1 version
+// export const loginAction = (username: any, password: any) => {
+//     return (dispatch: any) => {sendLoginData(username, password)
+//         .then(response => {
+//             const { token } = response.data;
+//             dispatch(setLoginInfo({ username: username, token: token }));
+//         })
+//         .catch(error => {
+//             // Handle the error here
+//             console.error('Login failed:', error);
+//             // Optionally dispatch an action to store the error state in Redux
+//         });
+//     };
+// };
+
 export const loginAction = (username: any, password: any) => {
-    return (dispatch: any) => {sendLoginData(username, password)
-        .then(response => {
+    return async (dispatch: any) => {
+        try {
+            const response = await sendLoginData(username, password);
             const { token } = response.data;
-            dispatch(setLoginInfo({ username: username, token: token }));
-        })
-        .catch(error => {
-            // Handle the error here
+            dispatch(setLoginInfo({ username, token }));
+        } catch (error) {
             console.error('Login failed:', error);
             // Optionally dispatch an action to store the error state in Redux
-        });
+        }
     };
 };
 

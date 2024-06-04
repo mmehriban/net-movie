@@ -21,6 +21,15 @@ export default function AvatarMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    // Perform any additional cleanup or logout actions here
+    // For example, redirect the user to the login page
+    // window.location.href = '/login';
+    handleClose(); // Close the menu
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -77,9 +86,9 @@ export default function AvatarMenu() {
         {/* <MenuItem onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem> */}
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Avatar /> My account
-        </MenuItem>
+        </MenuItem> */}
         <Divider />
         {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -87,7 +96,7 @@ export default function AvatarMenu() {
           </ListItemIcon>
           Settings
         </MenuItem> */}
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

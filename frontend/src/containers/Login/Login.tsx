@@ -5,14 +5,16 @@ import { loginAction } from '../../store/authSlice';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export interface ILoginProps {}
+export interface ILoginProps {
+}
 
 export default function Login(props: ILoginProps) {
   const usernameInputRef = React.useRef<HTMLInputElement>(null);
   const passwordInputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
-
+  
+  // original 1 version
   // const loginHandler = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault(); // Prevent default form submission behavior
   //   const username = usernameInputRef.current?.value;
@@ -24,18 +26,45 @@ export default function Login(props: ILoginProps) {
   //   }
   // }, [dispatch, navigate]);
 
+  // 2 version, does not work
+  // const loginHandler = React.useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault(); // Prevent default form submission behavior
+  //   const user_info = usernameInputRef.current?.value;
+  //   const password = passwordInputRef.current?.value;
+  //   if (user_info && password) {
+  //       const response = await axios.post('http://127.0.0.1:8000/api/login', { user_info, password });
+  //       const { accessToken } = response.data; // Assuming your server returns the access token
+  //       localStorage.setItem('accessToken', accessToken); // Store the access token in localStorage
+  //       dispatch(loginAction(user_info, accessToken)); // Dispatch login action with username and accessToken
+  //       navigate('/'); // Redirect user to home page after successful login
+  //   };
+  // }, [dispatch, navigate]);
+
+  // 3 version
   const loginHandler = React.useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
-    const username = usernameInputRef.current?.value;
+    const user_info = usernameInputRef.current?.value;
     const password = passwordInputRef.current?.value;
-    if (username && password) {
-        const response = await axios.post('http://127.0.0.1:8000/api/login', { username, password });
-        const { accessToken } = response.data; // Assuming your server returns the access token
-        localStorage.setItem('accessToken', accessToken); // Store the access token in localStorage
-        dispatch(loginAction(username, accessToken)); // Dispatch login action with username and accessToken
-        navigate('/'); // Redirect user to home page after successful login
-    };
+    if (user_info && password) {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/login/', { user_info, password });
+        const { token } = response.data;
+        // Dispatch an action to store the token in Redux
+        dispatch({ type: 'SET_TOKEN', payload: token });
+        // Store the token in localStorage for persistence
+        localStorage.setItem('token', token);
+        // Redirect the user to the home page
+        navigate('/');
+        
+        console.log(user_info, token);
+      } catch (error) {
+        console.error('Login failed:', error);
+        // Optionally handle and display the error to the user
+      }
+    }
+    
   }, [dispatch, navigate]);
+
 
   return (
     <div className='relative z-40'>
